@@ -27,7 +27,7 @@ public class Interaction : MonoBehaviour
         {
             lastCheckTime = Time.time;
 
-            Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+            Ray ray = new Ray(camera.transform.position + camera.transform.forward * 0.2f, camera.transform.forward); // 변경됨
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, maxCheckDistance, layerMask))
@@ -47,6 +47,7 @@ public class Interaction : MonoBehaviour
             }
         }
     }
+
 
     private void SetPromptText()
     {

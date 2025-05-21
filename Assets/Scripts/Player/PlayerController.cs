@@ -42,10 +42,6 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (canLook)
-        {
-            CameraLook();
-        }
 
     }
 
@@ -76,12 +72,14 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
-        dir *= moveSpeed;
-        dir.y = rigidbody.velocity.y;
+        Vector3 moveDir = new Vector3(curMovementInput.x, 0, curMovementInput.y);
+        moveDir = Quaternion.Euler(0, cameraContainer.eulerAngles.y, 0) * moveDir; // 카메라 방향 기준으로 이동
+        moveDir *= moveSpeed;
+        moveDir.y = rigidbody.velocity.y;
 
-        rigidbody.velocity = dir;
+        rigidbody.velocity = moveDir;
     }
+
 
     public void OnInventoryButton(InputAction.CallbackContext callbackContext)
     {

@@ -18,6 +18,7 @@ public class EquipTool : Equip
 
     private Animator animator;
     private Camera camera;
+    public Transform rayOrigin;
 
     private void Awake()
     {
@@ -42,22 +43,25 @@ public class EquipTool : Equip
     {
         attacking = false;
     }
+
     public void OnHit()
     {
-        Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-        RaycastHit hit;
+        // 카메라 중앙 방향으로 Ray 쏘되, 시작점은 rayOrigin에서
+        Ray ray = new Ray(rayOrigin.position, Camera.main.transform.forward);
+        Debug.DrawRay(ray.origin, ray.direction * attackDistance, Color.red, 1.0f);
 
-        if (Physics.Raycast(ray, out hit, attackDistance))
+        if (Physics.Raycast(ray, out RaycastHit hit, attackDistance))
         {
             if (doesGatherResources && hit.collider.TryGetComponent(out Resource resource))
             {
                 resource.Gather(hit.point, hit.normal);
             }
-            // 적 공격
+
             if (doesDealDamage && hit.collider.TryGetComponent(out IDamagable target))
             {
                 target.TakePhysicalDamage(damage);
             }
         }
     }
+
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4459228524956995946}
   - component: {fileID: 3007877735665425865}
   - component: {fileID: 5574390112567098225}
+  - component: {fileID: 2802210040565043494}
   m_Layer: 6
   m_Name: Equip_Sword
   m_TagString: Untagged
@@ -52,6 +53,7 @@ MonoBehaviour:
   doesGatherResources: 0
   doesDealDamage: 1
   damage: 10
+  rayOrigin: {fileID: 4603452164698979034}
 --- !u!95 &5574390112567098225
 Animator:
   serializedVersion: 5
@@ -73,6 +75,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!65 &2802210040565043494
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4131742601184467080}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.53, y: 1.27, z: 0.25}
+  m_Center: {x: -0.02, y: 0.44, z: 0}
 --- !u!1 &4445056774487112470
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,13 +122,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4445056774487112470}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.19897418, y: -0.4097872, z: 0.092086524, w: 0.8854399}
-  m_LocalPosition: {x: 0.4, y: -0.39, z: 0.6}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4603452164698979034}
   m_Father: {fileID: 4459228524956995946}
-  m_LocalEulerAnglesHint: {x: 25.33, y: -49.67, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &95711027932442121
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -156,3 +180,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4891446419571449142
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4603452164698979034}
+  m_Layer: 0
+  m_Name: RayOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4603452164698979034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4891446419571449142}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.835, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3961992541033669036}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
