@@ -9,6 +9,8 @@ public interface IDamagable
 
 public class PlayerCondition : MonoBehaviour, IDamagable
 {
+    [SerializeField] private GameObject visualRoot;
+
     [Header("UI 상태 참조")]
     public UICondition uiCondition;
 
@@ -29,7 +31,6 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     private void Update()
     {
         var smr = GetComponentInChildren<SkinnedMeshRenderer>();
-        Debug.Log("현재 색상: " + smr.material.color);
         if (!isInvincible)
         {
             hunger.Subtract(hunger.passiveValue * Time.deltaTime);
@@ -47,6 +48,32 @@ public class PlayerCondition : MonoBehaviour, IDamagable
             Die();
         }
     }
+    private void Start()
+    {
+        EnableSelfEmission();
+    }
+
+    private void EnableSelfEmission()
+    {
+        var renderers = GetComponentsInChildren<Renderer>();
+        foreach (var r in renderers)
+        {
+            var mat = r.material;
+
+            // 1. 기본 색상 고정
+            if (mat.HasProperty("_Color"))
+                mat.color = new Color(1f, 0.95f, 0.75f, 1f); // 지금 로그에 찍힌 색상
+
+            // 2. Emission 설정
+            if (mat.HasProperty("_EmissionColor"))
+            {
+                mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+                mat.EnableKeyword("_EMISSION");
+                mat.SetColor("_EmissionColor", new Color(1f, 0.95f, 0.75f) * 0.2f);
+            }
+        }
+    }
+
 
     public void Heal(float amount)
     {
@@ -109,10 +136,12 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     }
     private void ResetPlayerColor(Renderer[] renderers)
     {
+        Color baseColor = new Color(1f, 0.95f, 0.75f, 1f); // 예시: 처음에 설정한 색
+
         foreach (var r in renderers)
         {
             if (r.material.HasProperty("_Color"))
-                r.material.color = Color.white; // 기본색으로 복원
+                r.material.color = baseColor;
         }
     }
 

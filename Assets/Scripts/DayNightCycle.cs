@@ -21,9 +21,6 @@ public class DayNightCycle : MonoBehaviour
     public Gradient moonColor;
     public AnimationCurve moonIntensity;
 
-    [Header("Ambient Lighting")]
-    public Gradient ambientColor;
-
 
     [Header("Other Lighting")]
     public AnimationCurve lightingIntensityMultiplier;
@@ -44,7 +41,6 @@ public class DayNightCycle : MonoBehaviour
 
         RenderSettings.ambientIntensity = lightingIntensityMultiplier.Evaluate(time);
         RenderSettings.reflectionIntensity = reflectionIntensityMultiplier.Evaluate(time);
-        RenderSettings.ambientLight = ambientColor.Evaluate(time);
 
     }
 

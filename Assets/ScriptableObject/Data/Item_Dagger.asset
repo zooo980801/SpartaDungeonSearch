@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Item_Dagger
   m_EditorClassIdentifier: 
   displayName: "\uB300\uAC70"
-  description: "\uB3C5\uC774\uC788\uC2B5\uB2C8\uB2E4."
+  description: "\uC9E7\uC9C0\uB9CC \uACF5\uACA9\uC18D\uB3C4\uAC00 \uBE60\uB985\uB2C8\uB2E4"
   type: 1
   icon: {fileID: 0}
   dropPrefab: {fileID: 671127333794284911, guid: cc1015b090d7aaa4ca8a87f02bddf271, type: 3}
@@ -22,4 +22,4 @@ MonoBehaviour:
   canStack: 0
   maxStackAmount: 0
   consumables: []
-  equipPrefab: {fileID: 0}
+  equipPrefab: {fileID: 6101468610960675702, guid: 47d4209f9f3b90543b7fb19d1d0588d0, type: 3}
