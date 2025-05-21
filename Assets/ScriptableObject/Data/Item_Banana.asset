@@ -15,9 +15,11 @@ MonoBehaviour:
   displayName: "\uBC14\uB098\uB098"
   description: "\uC12D\uCDE8\uC2DC \uBE68\uB77C\uC9D1\uB2C8\uB2E4."
   type: 2
-  icon: {fileID: 0}
-  dropPrefab: {fileID: 0}
-  canStack: 0
-  maxStackAmount: 0
+  icon: {fileID: 21300000, guid: d4b87fa4adc3b064189e130e9f3cd6ab, type: 3}
+  dropPrefab: {fileID: 3147105911722169819, guid: 67be9af694e23d24188cbb3e38db7d77, type: 3}
+  effectType: 3
+  effectValue: 2
+  canStack: 1
+  maxStackAmount: 12
   consumables: []
   equipPrefab: {fileID: 0}

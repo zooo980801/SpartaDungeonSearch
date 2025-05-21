@@ -193,19 +193,27 @@ public class UIInventory : MonoBehaviour
     {
         if (selectedItem.type == ItemType.Consumable)
         {
+            // 기본 회복 처리
             for (int i = 0; i < selectedItem.consumables.Length; i++)
             {
                 switch (selectedItem.consumables[i].type)
                 {
                     case ConsumableType.Health:
-                        condition.Heal(selectedItem.consumables[i].value); break;
+                        condition.Heal(selectedItem.consumables[i].value);
+                        break;
                     case ConsumableType.Hunger:
-                        condition.Eat(selectedItem.consumables[i].value); break;
+                        condition.Eat(selectedItem.consumables[i].value);
+                        break;
                 }
             }
+
+            //사과, 아보카도, 바나나 등 효과 실행
+            CharacterManager.Instance.Player.UseConsumable(selectedItem);
+
             RemoveSelctedItem();
         }
     }
+
 
     public void OnDropButton()
     {
