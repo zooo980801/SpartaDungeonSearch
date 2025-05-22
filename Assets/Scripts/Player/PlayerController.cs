@@ -204,6 +204,20 @@ public class PlayerController : MonoBehaviour
     {
         rigidbody.velocity = Vector3.zero;
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("MovingPlatForm"))
+        {
+            transform.SetParent(collision.transform); // 플랫폼에 붙이기
+        }
+    }
 
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("MovingPlatForm"))
+        {
+            transform.SetParent(null); // 떨어질 때 원래 상태로
+        }
+    }
 
 }

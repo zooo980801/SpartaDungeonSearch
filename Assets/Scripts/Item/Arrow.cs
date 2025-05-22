@@ -9,7 +9,6 @@ public class Arrow : MonoBehaviour
     public void Launch(Vector3 direction, float force)
     {
         isLaunched = true;
-        Debug.Log("[Arrow] Launch 호출됨");
 
         if (TryGetComponent(out Rigidbody rb))
         {
@@ -21,18 +20,12 @@ public class Arrow : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"[Arrow] 충돌 감지: {collision.collider.name}");
 
         if (!isLaunched) return;
 
         if (collision.collider.GetComponentInParent<IDamagable>() is IDamagable damagable)
         {
-            Debug.Log("[Arrow] IDamagable 감지됨 → 데미지 적용");
             damagable.TakePhysicalDamage(damage);
-        }
-        else
-        {
-            Debug.Log("[Arrow] IDamagable 못 찾음");
         }
 
         // 발사체 기능 종료 → 루팅 전환
