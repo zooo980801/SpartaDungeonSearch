@@ -12,11 +12,19 @@ public class CharacterManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = new GameObject("CharacerManager").AddComponent<CharacterManager>();
+                _instance = FindObjectOfType<CharacterManager>();
+
+                // 여전히 못 찾았다면 (진짜 없을 때만 새로 생성)
+                if (_instance == null)
+                {
+                    _instance = new GameObject("CharacterManager").AddComponent<CharacterManager>();
+                }
             }
+
             return _instance;
         }
     }
+
 
     public Player Player
     {

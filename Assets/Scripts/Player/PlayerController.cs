@@ -17,6 +17,17 @@ public class PlayerController : MonoBehaviour
     private float camCurXRot;
     public float lookSensitivity;
 
+    [Header("Wall Climb / Hang")]
+    public float wallCheckDistance = 0.6f;
+    public float wallClimbSpeed = 2f;
+    public LayerMask wallLayerMask;
+
+    private bool isTouchingWall;
+    private bool isClimbingWall;
+    private bool isHanging;
+    public bool isFrozen = false;
+
+
     private Vector2 mouseDelta;
 
     public Action inventory;
@@ -35,14 +46,45 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        Move();
+        if (isFrozen) return;
+
+        CheckWall();
+
+        if (isClimbingWall)
+        {
+            Vector3 verticalDir = Vector3.zero;
+
+            if (curMovementInput.y > 0.1f)
+                verticalDir = Vector3.up;
+            else if (curMovementInput.y < -0.1f)
+                verticalDir = Vector3.down;
+
+            Vector3 horizontalDir = Vector3.zero;
+
+            if (curMovementInput.x != 0)
+                horizontalDir = transform.right * curMovementInput.x;
+
+            Vector3 climbDir = (verticalDir + horizontalDir).normalized;
+            if (climbDir != Vector3.zero)
+                ClimbWall(climbDir);
+            else
+                ClingWall(); // 입력 없으면 매달리기
+        }
+        else
+        {
+            Move();
+        }
+
+
     }
+
 
     private void LateUpdate()
     {
-
+        if (isFrozen || !canLook) return;
+        CameraLook();
     }
 
     public void OnLookInput(InputAction.CallbackContext context)
@@ -132,4 +174,36 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
         canLook = !toggle;
     }
+
+    void CheckWall()
+    {
+        Ray wallRay = new Ray(transform.position, transform.forward);
+        Debug.DrawRay(wallRay.origin, wallRay.direction * wallCheckDistance, Color.red);
+
+        isTouchingWall = Physics.Raycast(wallRay, wallCheckDistance, wallLayerMask);
+
+        if (isTouchingWall)
+        {
+            isClimbingWall = true;
+            rigidbody.useGravity = false;
+        }
+        else
+        {
+            isClimbingWall = false;
+            rigidbody.useGravity = true;
+        }
+    }
+
+
+    void ClimbWall(Vector3 direction)
+    {
+        rigidbody.velocity = direction * wallClimbSpeed;
+    }
+
+    void ClingWall()
+    {
+        rigidbody.velocity = Vector3.zero;
+    }
+
+
 }

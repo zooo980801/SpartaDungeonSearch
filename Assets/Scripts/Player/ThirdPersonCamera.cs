@@ -13,6 +13,8 @@ public class ThirdPersonCamera : MonoBehaviour
 
     void LateUpdate()
     {
+        if (CharacterManager.Instance?.Player?.controller?.isFrozen ?? true) return;
+
         Vector2 mouseDelta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         currentRotation.x += mouseDelta.x * sensitivity.x;
         currentRotation.y -= mouseDelta.y * sensitivity.y;

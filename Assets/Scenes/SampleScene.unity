@@ -6091,7 +6091,7 @@ MonoBehaviour:
   slots: []
   inventoryWindow: {fileID: 1912359245}
   slotPanel: {fileID: 350510082}
-  dropPosition: {fileID: 0}
+  dropPosition: {fileID: 2028031111}
   selectedItemName: {fileID: 1427008590}
   selectedItemDescription: {fileID: 1979478669}
   selectedItemStatName: {fileID: 1917742256}
