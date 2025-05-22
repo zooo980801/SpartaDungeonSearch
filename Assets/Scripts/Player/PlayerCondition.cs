@@ -87,7 +87,6 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     public void Die()
     {
-        Debug.Log("플레이어가 죽었다.");
         // TODO: 죽음 연출 추가 (애니메이션, UI 등)
     }
     public IEnumerator ApplyRainbowEffect(float duration)
@@ -181,11 +180,18 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     {
         StartCoroutine(InvincibleCoroutine(duration));
     }
-
+    public bool IsInvincible()
+    {
+        return isInvincible;
+    }
     private IEnumerator InvincibleCoroutine(float duration)
     {
         isInvincible = true;
         yield return new WaitForSeconds(duration);
         isInvincible = false;
+    }
+    public void SetInvincibleImmediate(bool value)
+    {
+        isInvincible = value;
     }
 }

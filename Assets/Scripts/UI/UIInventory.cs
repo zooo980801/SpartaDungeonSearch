@@ -161,6 +161,12 @@ public class UIInventory : MonoBehaviour
     // Player 스크립트 먼저 수정
     public void ThrowItem(ItemData data)
     {
+        if (data.dropPrefab == null)
+        {
+            Debug.LogWarning($"[UIInventory] {data.displayName} 의 dropPrefab이 비어 있습니다.");
+            return;
+        }
+
         Instantiate(data.dropPrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360));
     }
 
