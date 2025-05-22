@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e51349ddfd8778644845a3d090bac40e, type: 3}
   m_Name: Item_Avocado
   m_EditorClassIdentifier: 
+  itemId: 
   displayName: "\uC544\uBCF4\uCE74\uB3C4"
   description: "\uBB34\uC2A8\uD6A8\uACFC\uAC00 \uC788\uC744\uC9C0 \uBAA8\uB978\uB2E4."
   type: 2

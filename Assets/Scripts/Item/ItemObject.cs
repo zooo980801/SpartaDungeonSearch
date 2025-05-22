@@ -20,6 +20,7 @@ public class ItemObject : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
+        Debug.Log("[ItemObject] OnInteract 호출됨");
         //Player 스크립트 먼저 수정
         CharacterManager.Instance.Player.itemData = data;
         CharacterManager.Instance.Player.addItem?.Invoke();

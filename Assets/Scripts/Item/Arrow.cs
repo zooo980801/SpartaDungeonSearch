@@ -1,30 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(ItemObject))]
 public class Arrow : MonoBehaviour
 {
-    public int damage;
-    public float destroyAfter = 5f;
+    public int damage = 10;
+    private bool isLaunched = false;
 
-    private void Start()
+    public void Launch(Vector3 direction, float force)
     {
-        Destroy(gameObject, destroyAfter);
+        isLaunched = true;
+        Debug.Log("[Arrow] Launch 호출됨");
+
+        if (TryGetComponent(out Rigidbody rb))
+        {
+            rb.useGravity = true;
+            rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+            rb.AddForce(direction * force, ForceMode.Impulse);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.TryGetComponent(out PlayerCondition player))
+        Debug.Log($"[Arrow] 충돌 감지: {collision.collider.name}");
+
+        if (!isLaunched) return;
+
+        if (collision.collider.GetComponentInParent<IDamagable>() is IDamagable damagable)
         {
-            Vector3 dir = (player.transform.position - transform.position).normalized;
-            player.TakePhysicalDamage(damage); // 방향 포함된 오버로드 호출
-        }
-        else if (collision.collider.TryGetComponent(out IDamagable damagable))
-        {
+            Debug.Log("[Arrow] IDamagable 감지됨 → 데미지 적용");
             damagable.TakePhysicalDamage(damage);
         }
+        else
+        {
+            Debug.Log("[Arrow] IDamagable 못 찾음");
+        }
 
-        Destroy(gameObject);
+        // 발사체 기능 종료 → 루팅 전환
+        isLaunched = false;
+
+        if (TryGetComponent(out Rigidbody rb)) rb.isKinematic = true;
+        if (TryGetComponent(out Collider col)) col.isTrigger = true;
     }
-
 }

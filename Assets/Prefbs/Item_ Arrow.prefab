@@ -26,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3944072060349787954}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5396049220399458070}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &8477455534172766685
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 4184515500710150241}
   - component: {fileID: 5817808529797794050}
   - component: {fileID: -774590780334562521}
+  - component: {fileID: -3692655094493860975}
   m_Layer: 7
   m_Name: Item_ Arrow
   m_TagString: Untagged
@@ -111,8 +112,8 @@ Transform:
   m_GameObject: {fileID: 5960666236119536650}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.641563, y: 0.64016473, z: 3.598}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4944722745973480729}
@@ -137,8 +138,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.13, y: 0.64, z: 0.09}
-  m_Center: {x: 0, y: 0.31, z: 0}
+  m_Size: {x: 0.05, y: 0.05, z: 0.6}
+  m_Center: {x: 0, y: 0, z: 0.3}
 --- !u!54 &5817808529797794050
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -179,3 +180,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: f572aa2fd94d5a34195c63a66aa998c1, type: 2}
+--- !u!114 &-3692655094493860975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5960666236119536650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28b6e7b583f761643a1ad6e6e0c3cad3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
+  destroyAfter: 5

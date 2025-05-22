@@ -70,9 +70,10 @@ MonoBehaviour:
   useStamina: 10
   arrowPrefab: {fileID: 5960666236119536650, guid: a7feea2fbe4285143a4b3ebcabc73f87, type: 3}
   arrowSpawnPoint: {fileID: 5819743845575876662}
-  shootForce: 0
+  shootForce: 20
   arrowCooldown: 1
-  animator: {fileID: 0}
+  arrowItemData: {fileID: 11400000, guid: f572aa2fd94d5a34195c63a66aa998c1, type: 2}
+  rayOrigin: {fileID: 5819743845575876662}
 --- !u!1001 &6077996247760864770
 PrefabInstance:
   m_ObjectHideFlags: 0

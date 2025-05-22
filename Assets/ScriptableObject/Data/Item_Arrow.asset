@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e51349ddfd8778644845a3d090bac40e, type: 3}
   m_Name: Item_Arrow
   m_EditorClassIdentifier: 
+  itemId: arrow_basic
   displayName: "\uD654\uC0B4"
   description: "\uC6D0\uAC70\uB9AC\uBB34\uAE30\uC785\uB2C8\uB2E4."
   type: 0

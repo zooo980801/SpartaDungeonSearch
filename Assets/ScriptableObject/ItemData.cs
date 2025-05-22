@@ -35,6 +35,8 @@ public class ItemDataConsumable
 [CreateAssetMenu(fileName = "Item", menuName = "New Item")]
 public class ItemData : ScriptableObject
 {
+    [Header("ID")]
+    public string itemId;
     [Header("Info")]
     public string displayName;
     public string description;

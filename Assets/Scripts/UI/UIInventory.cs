@@ -88,6 +88,7 @@ public class UIInventory : MonoBehaviour
 
     public void AddItem()
     {
+        Debug.Log("[UIInventory] AddItem() 호출됨");
         ItemData data = CharacterManager.Instance.Player.itemData;
 
         if (data.canStack)
@@ -115,6 +116,7 @@ public class UIInventory : MonoBehaviour
 
         ThrowItem(data);
         CharacterManager.Instance.Player.itemData = null;
+
     }
 
     public void UpdateUI()
@@ -239,8 +241,38 @@ public class UIInventory : MonoBehaviour
 
     public bool HasItem(ItemData item, int quantity)
     {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].item != null && slots[i].item.itemId == item.itemId && slots[i].quantity >= quantity)
+            {
+                return true;
+            }
+        }
         return false;
     }
+    public void UseItem(ItemData item, int quantity)
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i].item != null && slots[i].item.itemId == item.itemId)
+            {
+                slots[i].quantity -= quantity;
+
+                if (slots[i].quantity <= 0)
+                {
+                    slots[i].item = null;
+                    slots[i].equipped = false;
+                }
+
+                UpdateUI();
+                return;
+            }
+        }
+    }
+
+
+
+
     public void OnEquipButton()
     {
         if (slots[curEquipIndex].equipped)
