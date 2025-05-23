@@ -8,7 +8,7 @@ public class PlayerChangeObject : MonoBehaviour, IInteractable
 
     public string GetInteractPrompt()
     {
-        return "<color=cyan>E</color> 키를 눌러 플레이어 설정 열기";
+        return "E 키를 눌러 플레이어 설정 열기";
     }
 
     public void OnInteract()
