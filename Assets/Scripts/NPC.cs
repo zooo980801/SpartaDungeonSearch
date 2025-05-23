@@ -2,6 +2,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum Faction
+{
+    Ally,
+    Enemy
+}
+
 public enum AIState
 {
     Idle,
@@ -36,6 +42,10 @@ public class NPC : MonoBehaviour, IDamagable
     private float lastAttackTime;
     public float attackDistance;
 
+    [Header("진영 설정")]
+    public Faction faction = Faction.Enemy;
+
+
     private float playerDistance;
 
     public float fieldOfView = 120f;
@@ -55,8 +65,15 @@ public class NPC : MonoBehaviour, IDamagable
         SetState(AIState.Wandering);
     }
 
+
     private void Update()
     {
+        if (faction == Faction.Ally)
+        {
+            AllyUpdate();
+            return;
+        }
+
         playerDistance = Vector3.Distance(transform.position, CharacterManager.Instance.Player.transform.position);
 
         animator.SetBool("Moving", aiState != AIState.Idle);
@@ -64,8 +81,6 @@ public class NPC : MonoBehaviour, IDamagable
         switch (aiState)
         {
             case AIState.Idle:
-                PassiveUpdate();
-                break;
             case AIState.Wandering:
                 PassiveUpdate();
                 break;
@@ -77,6 +92,7 @@ public class NPC : MonoBehaviour, IDamagable
                 break;
         }
     }
+
 
     private void SetState(AIState state)
     {
@@ -113,26 +129,27 @@ public class NPC : MonoBehaviour, IDamagable
             Invoke("WanderToNewLocation", Random.Range(minWanderWaitTime, maxWanderWaitTime));
         }
 
-        if (playerDistance < detectDistance)
+        // ✅ 타겟이 감지 범위 내에 있으면 공격 상태로 진입
+        Transform target = FindNearestTarget();
+        if (target != null && Vector3.Distance(transform.position, target.position) < detectDistance)
         {
             SetState(AIState.Attacking);
         }
     }
 
+
     void AttackingUpdate()
     {
-        if (playerDistance > attackDistance || !IsPlayerInFieldOfView())
+        Transform target = FindNearestTarget();
+
+        if (target == null) return;
+
+        float dist = Vector3.Distance(transform.position, target.position);
+
+        if (dist > attackDistance || !IsInFieldOfView(target))
         {
             agent.isStopped = false;
-            NavMeshPath path = new NavMeshPath();
-            if (agent.CalculatePath(CharacterManager.Instance.Player.transform.position, path))
-            {
-                agent.SetDestination(CharacterManager.Instance.Player.transform.position);
-            }
-            else
-            {
-                SetState(AIState.Fleeing);
-            }
+            agent.SetDestination(target.position);
         }
         else
         {
@@ -140,12 +157,23 @@ public class NPC : MonoBehaviour, IDamagable
             if (Time.time - lastAttackTime > attackRate)
             {
                 lastAttackTime = Time.time;
-                CharacterManager.Instance.Player.controller.GetComponent<IDamagable>().TakePhysicalDamage(damage);
-                animator.speed = 1;
                 animator.SetTrigger("Attack");
+
+                IDamagable damagable = target.GetComponent<IDamagable>();
+                if (damagable != null)
+                {
+                    damagable.TakePhysicalDamage(damage);
+                }
             }
         }
     }
+    bool IsInFieldOfView(Transform target)
+    {
+        Vector3 directionToTarget = target.position - transform.position;
+        float angle = Vector3.Angle(transform.forward, directionToTarget);
+        return angle < fieldOfView * 0.5f;
+    }
+
 
     void FleeingUpdate()
     {
@@ -248,4 +276,103 @@ public class NPC : MonoBehaviour, IDamagable
         for (int x = 0; x < meshRenderers.Length; x++)
             meshRenderers[x].material.color = Color.white;
     }
+
+    void AllyUpdate()
+    {
+        // 플레이어 따라가기
+        Transform player = CharacterManager.Instance.Player.transform;
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if (distanceToPlayer > 3f)
+        {
+            agent.SetDestination(player.position);
+        }
+        else
+        {
+            agent.ResetPath();
+        }
+
+        // 근처 적 NPC 탐색 및 공격
+        NPC targetEnemy = FindNearestEnemy();
+        if (targetEnemy != null)
+        {
+            float dist = Vector3.Distance(transform.position, targetEnemy.transform.position);
+            if (dist < attackDistance)
+            {
+                if (Time.time - lastAttackTime > attackRate)
+                {
+                    lastAttackTime = Time.time;
+
+                    if (targetEnemy.faction != this.faction)
+                    {
+                        targetEnemy.TakePhysicalDamage(damage);
+                        animator.SetTrigger("Attack");
+                    }
+                }
+
+                agent.isStopped = true;
+            }
+
+            else
+            {
+                agent.isStopped = false;
+                agent.SetDestination(targetEnemy.transform.position);
+            }
+        }
+    }
+
+    NPC FindNearestEnemy()
+    {
+        float closest = Mathf.Infinity;
+        NPC nearest = null;
+
+        foreach (NPC npc in FindObjectsOfType<NPC>())
+        {
+            if (npc == this || npc.faction == this.faction) continue;
+
+            float dist = Vector3.Distance(transform.position, npc.transform.position);
+            if (dist < closest)
+            {
+                closest = dist;
+                nearest = npc;
+            }
+        }
+
+        return nearest;
+    }
+
+    Transform FindNearestTarget()
+    {
+        Transform nearest = null;
+        float closest = Mathf.Infinity;
+
+        foreach (NPC npc in FindObjectsOfType<NPC>())
+        {
+            if (npc == this || npc.faction == this.faction) continue;
+
+            float dist = Vector3.Distance(transform.position, npc.transform.position);
+            if (dist < closest)
+            {
+                closest = dist;
+                nearest = npc.transform;
+            }
+        }
+
+        // 플레이어도 포함
+        Transform player = CharacterManager.Instance.Player.transform;
+        if (this.faction == Faction.Enemy)
+        {
+            float playerDist = Vector3.Distance(transform.position, player.position);
+            if (playerDist < closest)
+            {
+                nearest = player;
+            }
+        }
+
+        return nearest;
+    }
+
+
+
+
 }

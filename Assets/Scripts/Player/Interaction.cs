@@ -15,6 +15,10 @@ public class Interaction : MonoBehaviour
     public TextMeshProUGUI promptText;
     private Camera camera;
 
+    [Header("발사 안내 UI")]
+    public GameObject launchTextUI;
+    public TextMeshProUGUI launchText;
+
     void Start()
     {
         camera = Camera.main;

@@ -87,6 +87,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     public void Die()
     {
+        health.curValue = 0f;
         // TODO: 죽음 연출 추가 (애니메이션, UI 등)
     }
     public IEnumerator ApplyRainbowEffect(float duration)
