@@ -16,6 +16,11 @@ public class MovingPlatForm : MonoBehaviour
     private bool playerOnPlatform = false;
     private float launchTimer = 0f;
 
+    private float exitBufferTime = 0.2f; // 0.2초 안에 다시 닿으면 무시
+    private float exitTimer = 0f;
+    private bool exitedButWaiting = false;
+
+
     [Header("발사 안내 UI")]
     public GameObject launchTextUI;
     public TextMeshProUGUI launchText;
@@ -29,11 +34,29 @@ public class MovingPlatForm : MonoBehaviour
 
     void Update()
     {
+        // 플랫폼 이동
         transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
-
         if (Vector3.Distance(transform.position, target) < 0.1f)
         {
             target = (target == pointA.position) ? pointB.position : pointA.position;
+        }
+
+        // exitBuffer 처리
+        if (exitedButWaiting)
+        {
+            exitTimer += Time.deltaTime;
+            if (exitTimer >= exitBufferTime)
+            {
+                // 진짜로 나간 걸로 판단
+                playerOnPlatform = false;
+                playerRb = null;
+                launchTimer = 0f;
+
+                if (launchTextUI != null)
+                    launchTextUI.SetActive(false);
+
+                exitedButWaiting = false;
+            }
         }
 
         if (playerOnPlatform && playerRb != null)
@@ -49,15 +72,8 @@ public class MovingPlatForm : MonoBehaviour
                     $"<color=#FFA500>가만히 있어도 {remaining:F1}초 후 발사</color>";
             }
 
-
-            // 자동 발사
-            if (launchTimer >= launchDelay)
-            {
-                LaunchPlayer();
-            }
-
-            // 수동 발사
-            if (Input.GetKeyDown(KeyCode.Space))
+            // 자동 / 수동 발사
+            if (launchTimer >= launchDelay || Input.GetKeyDown(KeyCode.Space))
             {
                 LaunchPlayer();
             }
@@ -88,6 +104,9 @@ public class MovingPlatForm : MonoBehaviour
                 playerOnPlatform = true;
                 launchTimer = 0f;
 
+                exitedButWaiting = false;
+                exitTimer = 0f;
+
                 if (launchTextUI != null)
                     launchTextUI.SetActive(true);
             }
@@ -98,12 +117,8 @@ public class MovingPlatForm : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            playerOnPlatform = false;
-            playerRb = null;
-            launchTimer = 0f;
-
-            if (launchTextUI != null)
-                launchTextUI.SetActive(false);
+            exitedButWaiting = true;
+            exitTimer = 0f; // 버퍼 시작
         }
     }
 }
